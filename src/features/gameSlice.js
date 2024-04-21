@@ -1,4 +1,5 @@
 import { createSlice, current } from "@reduxjs/toolkit";
+import CheckGameOver from "../checkGameOver";
 
 const createEmptyBoard = (sizeX, sizeY) => {
   const board = [];
@@ -11,30 +12,50 @@ const createEmptyBoard = (sizeX, sizeY) => {
 const gameSlice = createSlice({
   name: "game",
   initialState: {
-    sizeX:7,
-    sizeY:5,
+    sizeX: 7,
+    sizeY: 5,
     board: createEmptyBoard(7, 5),
     currentPlayer: 1,
+    winner: null,
   },
   reducers: {
-    drop_token: (state, {payload: n_column}) => {
-      let n_row = 0
-      while (n_row + 1 < state.sizeY && state.board[n_row+1][n_column] == 0){
-        n_row += 1
+    drop_token: (state, { payload: n_column }) => {
+      if(state.winner!==null){
+        return
       }
 
-      state.board[n_row][n_column] = state.currentPlayer
+      let n_row = 0;
+      while (n_row + 1 < state.sizeY && state.board[n_row + 1][n_column] == 0) {
+        n_row += 1;
+      }
+
+      state.board[n_row][n_column] = state.currentPlayer;
+      if(CheckGameOver(state.board,state.sizeX,state.sizeY)){
+        state.winner= state.currentPlayer;
+      }else{
+        state.currentPlayer = state.currentPlayer === 1 ? 2 : 1;
+      }
       
-    }
+    },
+    game_restart: (state) => {
+      state.board = createEmptyBoard(state.sizeX, state.sizeY);
+      state.currentPlayer = 1;
+      state.winner=null;
+    },
+    set_winner: (state, { payload: winner }) => {
+      state.winner = winner;
+    },
   },
 });
 
-export const {
-  
-} = gameSlice.actions;
+export const { drop_token,game_restart,set_winner } = gameSlice.actions;
 
-export const selectTasksState = (state) => state.tasks;
-
-
+export const selectTasksState = (state) => state.game;
+export const selectSizeX = (state) => selectTasksState(state).sizeX;
+export const selectSizeY = (state) => selectTasksState(state).sizeY;
+export const selectBoard = (state) => selectTasksState(state).board;
+export const selectCurrentPlayer = (state) =>
+  selectTasksState(state).currentPlayer;
+export const selectWinner = (state) => selectTasksState(state).winner;
 
 export default gameSlice.reducer;

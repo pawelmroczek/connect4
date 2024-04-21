@@ -4,7 +4,7 @@ export const StyledHeader = styled.header`
    
     text-align: center;
     font-size:50px;
-    font-weight: 100;
+    font-weight: 700;
     color: #023047;
     border-bottom: 1px solid #023047;
 `
