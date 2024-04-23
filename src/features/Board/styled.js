@@ -9,6 +9,11 @@ export const Cell = styled.div`
   background-color: lightgray;
   margin: 2px;
   border-radius: 10px;
+
+  @media (max-width: 768px) {
+    width: 45px;
+    height: 45px;
+  }
 `;
 
 const dropIn = keyframes`
@@ -58,7 +63,18 @@ export const Text = styled.p`
   text-align: center;
   font-weight: 700;
   font-size: 30px;
+
+  @media (max-width: 768px) {
+    font-size: 20px;
+  }
 `;
+
+export const HiddingSpan = styled.span`
+  @media (max-width: 768px) {
+    display: none;
+  }
+`;
+
 
 export const NowPlaying = styled.div`
   display: flex;

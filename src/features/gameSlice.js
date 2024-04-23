@@ -49,7 +49,7 @@ const gameSlice = createSlice({
         return
       }
       console.log("minMaxMove")
-      let best_column = decideMove(state.board, state.sizeX, state.sizeY, 2, state.currentPlayer);
+      let best_column = decideMove(state.board, state.sizeX, state.sizeY, 1, state.currentPlayer);
       let n_row = 0;
       while (n_row + 1 < state.sizeY && state.board[n_row + 1][best_column] === 0) {
         n_row += 1;

@@ -7,14 +7,24 @@ export const StyledHeader = styled.header`
     font-weight: 700;
     color: #023047;
     border-bottom: 1px solid #023047;
+
+    @media(max-width: 768px){
+        font-size: 40px;
+    }
 `
 
 export const Wrapper = styled.div`
     padding-top: 40px;
     display: flex;
     justify-content: space-between;
+    align-items: center;
     width: 80%;
     margin: 0 auto;
+
+    @media(max-width: 768px){
+        width:95%;
+        
+    }
     
 `
 
@@ -32,6 +42,10 @@ export const Button = styled.button`
     &:hover {
       background-color: #023047;
     color: #8ecae6;
+    }
+
+    @media(max-width: 768px){
+        font-size: 16px;
     }
 `
 

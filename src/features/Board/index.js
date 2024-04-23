@@ -7,7 +7,7 @@ import {
   selectSizeX,
   selectSizeY,
 } from "../gameSlice";
-import { AnimateSVG, BoardWrapper, Cell, Col, NowPlaying, Text } from "./styled";
+import { AnimateSVG, BoardWrapper, Cell, Col, HiddingSpan, NowPlaying, Text } from "./styled";
 import { useEffect } from "react";
 
 const generateToken = (value) => {
@@ -143,7 +143,7 @@ const Board = () => {
     <>
     <BoardWrapper>{generateBoard(sizeX, sizeY, board, dispatch)}</BoardWrapper>
     {generateGameState(player,winner)}
-    <Text>click on choosen column OR press 1-7 to drop a token </Text>
+    <Text>click on choosen column <HiddingSpan>OR press 1-7 to drop a token</HiddingSpan> </Text>
     </>
   );
 };
