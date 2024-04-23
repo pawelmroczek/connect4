@@ -1,11 +1,13 @@
-import { createSlice, current } from "@reduxjs/toolkit";
-import CheckGameOver from "../checkGameOver";
+import { createSlice } from "@reduxjs/toolkit";
+import {CheckDraft, CheckGameOver, decideMove} from "../Connet4Logic";
 
 const createEmptyBoard = (sizeX, sizeY) => {
   const board = [];
   for (let i = 0; i < sizeY; i++) {
     board.push(Array(sizeX).fill(0));
   }
+  
+
   return board;
 };
 
@@ -25,17 +27,45 @@ const gameSlice = createSlice({
       }
 
       let n_row = 0;
-      while (n_row + 1 < state.sizeY && state.board[n_row + 1][n_column] == 0) {
+      while (n_row + 1 < state.sizeY && state.board[n_row + 1][n_column] === 0) {
         n_row += 1;
       }
 
       state.board[n_row][n_column] = state.currentPlayer;
       if(CheckGameOver(state.board,state.sizeX,state.sizeY)){
         state.winner= state.currentPlayer;
-      }else{
+      }else if(CheckDraft(state.board,state.sizeX,state.sizeY)){
+        state.winner= "draft"
+      }
+
+      else{
         state.currentPlayer = state.currentPlayer === 1 ? 2 : 1;
       }
       
+    },
+    minMaxMove: (state) => {
+
+      if(state.winner!==null){
+        return
+      }
+      console.log("minMaxMove")
+      let best_column = decideMove(state.board, state.sizeX, state.sizeY, 2, state.currentPlayer);
+      let n_row = 0;
+      while (n_row + 1 < state.sizeY && state.board[n_row + 1][best_column] === 0) {
+        n_row += 1;
+      }
+
+      state.board[n_row][best_column] = state.currentPlayer;
+      if(CheckGameOver(state.board,state.sizeX,state.sizeY)){
+        state.winner= state.currentPlayer;
+      }else if(CheckDraft(state.board,state.sizeX,state.sizeY)){
+        state.winner= "draft"
+      }
+
+      else{
+        state.currentPlayer = state.currentPlayer === 1 ? 2 : 1;
+      }
+
     },
     game_restart: (state) => {
       state.board = createEmptyBoard(state.sizeX, state.sizeY);
@@ -48,7 +78,7 @@ const gameSlice = createSlice({
   },
 });
 
-export const { drop_token,game_restart,set_winner } = gameSlice.actions;
+export const { drop_token,game_restart,set_winner,minMaxMove } = gameSlice.actions;
 
 export const selectTasksState = (state) => state.game;
 export const selectSizeX = (state) => selectTasksState(state).sizeX;

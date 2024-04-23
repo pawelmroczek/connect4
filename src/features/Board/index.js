@@ -1,17 +1,17 @@
 import { useDispatch, useSelector } from "react-redux";
 import {
   drop_token,
+  minMaxMove,
   selectBoard,
   selectCurrentPlayer,
   selectSizeX,
   selectSizeY,
 } from "../gameSlice";
-import { AnimateSVG, BoardWrapper, Cell, Col, NowPlaying, Row, Text } from "./styled";
+import { AnimateSVG, BoardWrapper, Cell, Col, NowPlaying, Text } from "./styled";
 import { useEffect } from "react";
-import CheckGameOver from "../../checkGameOver";
 
 const generateToken = (value) => {
-  if (value == 1) {
+  if (value === 1) {
     return (
       <AnimateSVG
         fill="#000000"
@@ -41,7 +41,7 @@ const generateToken = (value) => {
         </g>
       </AnimateSVG>
     );
-  } else if (value == 2) {
+  } else if (value === 2) {
     return (
       <AnimateSVG
         fill="#000000"
@@ -89,7 +89,7 @@ const generateBoard = (sizeX, sizeY, board, dispatch) => {
         key={i}
         onClick={() => {
           dispatch(drop_token(i));
-          
+          dispatch(minMaxMove());
         }}
       >
         {row}
@@ -104,7 +104,11 @@ const generateGameState = (player, winner) =>{
   
   if(winner === null){
     return <NowPlaying>Now playing: {generateToken(player)} </NowPlaying>
-  }else{
+  }else if(winner=== "draft"){
+    return <NowPlaying>Draft!</NowPlaying>
+  }
+  
+  else{
     return <NowPlaying>{generateToken(winner)} WIN!!!</NowPlaying>
   }
 }
@@ -122,7 +126,7 @@ const Board = () => {
     const handleKeyDown = (event) => {
       if (event.key >= 1 && event.key <= sizeX) {
         dispatch(drop_token(parseInt(event.key) - 1));
-        
+        dispatch(minMaxMove());
       }
     };
 
