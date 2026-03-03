@@ -1,4 +1,5 @@
 import Board from './features/Board';
+import Footer from './features/Footer';
 import Header from './features/Header';
 
 
@@ -7,6 +8,7 @@ function App() {
     <div>
       <Header />
       <Board/>
+      <Footer/>
     </div>
   );
 }
